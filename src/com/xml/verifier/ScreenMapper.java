@@ -4,6 +4,7 @@
  */
 package com.xml.verifier;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -35,15 +36,25 @@ public class ScreenMapper extends Container
     @Override
     public void paint(Graphics g)
     {
+        System.out.println("MAPPER PAINT");
         super.paint(g);
         ArrayList listOfStringLocations = new ArrayList();
         Iterator iterator = gadgetMap.iterator();
         while (iterator.hasNext())
         {
             GadgetDisplayElement gadgetElement = (GadgetDisplayElement) iterator.next();
-            g.setColor(GadgetConfig.getGadgetColor(gadgetElement.getGadgetType()));
-            g.drawRect(gadgetElement.getBounds().x, gadgetElement.getBounds().y,
+            Color gadgetColor = GadgetConfig.getGadgetColor(gadgetElement.getGadgetType());
+            g.setColor(gadgetColor);
+            if (gadgetElement.getGadgetType() == GadgetConfig.RENDER_ITEM_TEXT_OR_IMAGE)
+            {
+                g.fillRect(gadgetElement.getBounds().x, gadgetElement.getBounds().y,
                     gadgetElement.getBounds().width, gadgetElement.getBounds().height);
+            } else
+            {
+                g.drawRect(gadgetElement.getBounds().x, gadgetElement.getBounds().y,
+                        gadgetElement.getBounds().width, gadgetElement.getBounds().height);
+            }
+            g.setColor(gadgetColor.brighter().brighter().brighter().brighter());
             Image image = gadgetElement.getBackgroundImage();
             if (null != image)
             {
